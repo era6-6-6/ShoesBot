@@ -18,6 +18,7 @@ namespace ShoesBot
     public partial class MainWindow : MetroForm
     {
         public static ChromeDriver _driver;
+        Thread _thread;
         public MainWindow()
         {
             InitializeComponent();
@@ -28,7 +29,7 @@ namespace ShoesBot
             var service = ChromeDriverService.CreateDefaultService();
             service.HideCommandPromptWindow = true;
             var chromeSetting = new ChromeOptions();
-            var chromeDriver = new ChromeDriver();
+            var chromeDriver = new ChromeDriver(service);
             return chromeDriver;
         }
         private Task StartBrowser()
@@ -37,7 +38,15 @@ namespace ShoesBot
             return Task.CompletedTask;
         }
 
+        private void StartBtn_Click(object sender, EventArgs e)
+        {
+                Task.Run(() => StartBrowser());
+        }
 
-
+        private void StopBtn_Click(object sender, EventArgs e)
+        {
+            _driver.Quit();
+            
+        }
     }
 }
